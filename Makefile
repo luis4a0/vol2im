@@ -17,4 +17,7 @@ vol2im: ${OBJECTS}
 	${CXX} ${LDPARAMS} ${CXXLIBDIRS} ${OBJECTS} -o ${EXEC_NAME} ${CXXLIBS}
 
 clean:
+	rm -f ${OBJECTS}
+
+distclean:
 	rm -f ${OBJECTS} ${EXEC_NAME}
