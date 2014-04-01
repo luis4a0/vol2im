@@ -8,7 +8,7 @@
 int pngWrite(const unsigned startSlice,
              const unsigned xSize,
              const unsigned ySize,
-             unsigned ***volume,
+             voxel_t ***volume,
              const char *filename){
 
         FILE *fp=fopen(filename,"wb");
@@ -51,10 +51,10 @@ int pngWrite(const unsigned startSlice,
                         png_malloc(png_ptr,sizeof(uint8_t)*xSize*pixel_size);
                 row_pointers[y]=row;
                 for(int x=0;x<xSize;++x){
-                        *row++=volume[startSlice  ][x][y]*255;
-                        *row++=volume[startSlice+1][x][y]*255;
-                        *row++=volume[startSlice+2][x][y]*255;
-                        *row++=volume[startSlice+3][x][y]*255;
+                        *row++=volume[startSlice  ][x][y];
+                        *row++=volume[startSlice+1][x][y];
+                        *row++=volume[startSlice+2][x][y];
+                        *row++=volume[startSlice+3][x][y];
                 }
         }
 

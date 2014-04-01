@@ -1,5 +1,4 @@
 #include "png_frontend.h"
-#include "volumetric_structure.h"
 #include <png.h>
 #include <stdint.h>
 #include <cstdlib>
@@ -10,7 +9,7 @@
 int pngRead(unsigned *numSlices,
             unsigned *xSize,
             unsigned *ySize,
-            unsigned ****volume,
+            voxel_t ****volume,
             const char *filename){
 
         FILE *fp=fopen(filename,"rb");
@@ -64,8 +63,8 @@ int pngRead(unsigned *numSlices,
         *xSize=4;
         *ySize=4;
         *volume=initStructure(*xSize,*ySize,*numSlices);
-        (*volume)[1][2][3]=1;
-        (*volume)[3][2][3]=1;
+        (*volume)[1][2][3]=255;
+        (*volume)[3][2][3]=255;
 
         fclose(fp);
         return 0;

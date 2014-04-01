@@ -1,12 +1,13 @@
 #include <iostream>
 #include <cstring>
+#include "volumetric_structure.h"
 #include "png_backend.h"
 #include "png_frontend.h"
 
 void readVolumetricData(unsigned *numSlices,
                         unsigned *xSize,
                         unsigned *ySize,
-                        unsigned ****volume,
+                        voxel_t ****volume,
                         const char *filename){
         std::cerr<<"reading from "<<filename<<std::endl;
         if(!pngRead(numSlices,xSize,ySize,volume,filename))
@@ -17,13 +18,13 @@ void readVolumetricData(unsigned *numSlices,
 }
 
 std::ostream& printSlice(std::ostream &o,
-                        const unsigned s,
+                        const unsigned slice,
                         const unsigned xSize,
                         const unsigned ySize,
-                        unsigned ***volume){
+                        voxel_t ***volume){
         for(int i=0;i<xSize;++i){
                 for(int j=0;j<ySize;++j){
-                        o<<volume[s][i][j]<<' '<<std::flush;
+                        o<<(unsigned)(volume[slice][i][j])<<' '<<std::flush;
                 }
                 o<<std::endl;
         }
@@ -33,7 +34,7 @@ std::ostream& printSlice(std::ostream &o,
 void saveSlicesToFile(const unsigned startSlice,
                       const unsigned xSize,
                       const unsigned ySize,
-                      unsigned ***volume,
+                      voxel_t ***volume,
                       const char *filename){
         std::cerr<<"writing to "<<filename<<std::endl;
         if(!pngWrite(startSlice,xSize,ySize,volume,filename))
@@ -79,7 +80,7 @@ int main(const int argc,const char** argv){
         unsigned startSlice=0;
         unsigned numSlices,xSize,ySize;
         // The volumetric data structure to store the read data.
-        unsigned ***volume;
+        voxel_t ***volume;
         readVolumetricData(&numSlices,&xSize,&ySize,&volume,argv[1]);
         // Print data to stdout.
         for(int s=0;s<numSlices;++s){
