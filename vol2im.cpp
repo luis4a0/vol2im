@@ -4,17 +4,19 @@
 #include "png_backend.h"
 #include "png_frontend.h"
 
-void readVolumetricData(unsigned *numSlices,
-                        unsigned *xSize,
-                        unsigned *ySize,
-                        voxel_t ****volume,
-                        const char *filename){
+int readVolumetricData(unsigned *numSlices,
+                       unsigned *xSize,
+                       unsigned *ySize,
+                       voxel_t ****volume,
+                       const char *filename){
         std::cerr<<"reading from "<<filename<<std::endl;
-        if(!pngRead(numSlices,xSize,ySize,volume,filename))
+        int ret=pngRead(numSlices,xSize,ySize,volume,filename);
+        std::cout<<"ret = "<<ret<<std::endl;
+        if(!ret)
                 std::cerr<<"ok"<<std::endl;
         else
-                std::cerr<<"error!"<<std::endl;
-        return;
+                std::cerr<<"error "<<ret<<"!"<<std::endl;
+        return ret;
 }
 
 std::ostream& printSlice(std::ostream &o,
@@ -77,16 +79,16 @@ int main(const int argc,const char** argv){
         }
 
         // Read slices 0 to 3
-        unsigned startSlice=0;
+        unsigned startSlice=110;
         unsigned numSlices,xSize,ySize;
         // The volumetric data structure to store the read data.
         voxel_t ***volume;
         readVolumetricData(&numSlices,&xSize,&ySize,&volume,argv[1]);
         // Print data to stdout.
-        for(int s=0;s<numSlices;++s){
+        /*for(int s=0;s<numSlices;++s){
                 std::cout<<"slice "<<s<<":"<<std::endl;
                 printSlice(std::cout,s,xSize,ySize,volume);
-        }
+        }*/
         saveSlicesToFile(startSlice,xSize,ySize,volume,argv[2]);
         return 0;
 }
