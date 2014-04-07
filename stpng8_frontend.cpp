@@ -124,5 +124,10 @@ int stpng8Read(unsigned *xSize,
         std::cout<<"ySize="<<(*ySize)<<std::endl;
         // Init the volumetric structure, with only four slices.
         *volume=initStructure(*xSize,*ySize,4);
+        stpng8ReadSlice(0,*xSize,*ySize,volume,filename1);
+        stpng8ReadSlice(1,*xSize,*ySize,volume,filename2);
+        stpng8ReadSlice(2,*xSize,*ySize,volume,filename3);
+        stpng8ReadSlice(3,*xSize,*ySize,volume,filename4);
+
         return 0;
 }

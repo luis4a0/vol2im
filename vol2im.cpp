@@ -59,7 +59,6 @@ int main(const int argc,const char** argv){
                 }
         }
 
-        // Read slices 0 to 3
         unsigned startSlice=0;
         unsigned numSlices,xSize,ySize;
         // The volumetric data structure to store the read data.
