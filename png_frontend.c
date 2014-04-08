@@ -1,10 +1,9 @@
 #include "png_frontend.h"
 #include <png.h>
 #include <stdint.h>
-#include <cstdlib>
-#include <cstdio>
-#include <cmath>
-#include <iostream>
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
 
 // http://www.libpng.org/pub/png/libpng-1.2.5-manual.html#section-3
 int pngRead(unsigned *numSlices,
@@ -13,6 +12,7 @@ int pngRead(unsigned *numSlices,
             voxel_t ****volume,
             const char *filename){
 
+        int i,j,k;
         // Open file.
         FILE *fp=fopen(filename,"rb");
         if(!fp)
@@ -50,9 +50,6 @@ int pngRead(unsigned *numSlices,
         *xSize=png_get_image_width(png_ptr,info_ptr);
         *ySize=png_get_image_height(png_ptr,info_ptr);
         *numSlices=(unsigned)(powf(2.f,png_get_bit_depth(png_ptr,info_ptr)));
-        //std::cout<<"xSize="<<(*xSize)<<std::endl;
-        //std::cout<<"ySize="<<(*ySize)<<std::endl;
-        //std::cout<<"numSlices="<<(*numSlices)<<std::endl;
 
         png_read_update_info(png_ptr,info_ptr);
 
@@ -62,16 +59,16 @@ int pngRead(unsigned *numSlices,
 
         int pixel_size=1;
         png_bytep row_pointers[*ySize];
-        for(int i=0;i<*ySize;++i){
+        for(i=0;i<*ySize;++i){
                 row_pointers[i]=
                         (png_bytep)png_malloc(png_ptr,(*xSize)*pixel_size);
                         //(png_byte*)malloc(png_get_rowbytes(png_ptr,info_ptr));
         }
         //png_set_rows(png_ptr,info_ptr,row_pointers);
         png_read_image(png_ptr,row_pointers);
-        for(int i=0;i<*ySize;++i){
-                for(int j=0;j<*xSize;++j)
-                        for(int k=0;k<*numSlices;++k){
+        for(i=0;i<*ySize;++i){
+                for(j=0;j<*xSize;++j)
+                        for(k=0;k<*numSlices;++k){
                                 if(row_pointers[i][j]>=k)
                                         (*volume)[k][j][i]=255;
                                 else

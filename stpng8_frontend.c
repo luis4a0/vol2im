@@ -1,13 +1,13 @@
 #include "png_frontend.h"
 #include <png.h>
 #include <stdint.h>
-#include <cstdlib>
-#include <cstdio>
-#include <cmath>
-#include <iostream>
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
 
 // Open one png file and return its size.
 int pngSize(unsigned *xSize,unsigned *ySize,const char *filename){
+        int i,j;
         FILE *fp=fopen(filename,"rb");
         if(!fp)
                 return -1;
@@ -53,6 +53,7 @@ int stpng8ReadSlice(unsigned nSlice,
                     unsigned ySize,
                     voxel_t ****volume,
                     const char *filename){
+        int i,j;
         // Open file.
         FILE *fp=fopen(filename,"rb");
         if(!fp)
@@ -95,15 +96,15 @@ int stpng8ReadSlice(unsigned nSlice,
 
         int pixel_size=1;
         png_bytep row_pointers[ySize];
-        for(int i=0;i<ySize;++i){
+        for(i=0;i<ySize;++i){
                 row_pointers[i]=
                         (png_bytep)png_malloc(png_ptr,xSize*pixel_size);
                         //(png_byte*)malloc(png_get_rowbytes(png_ptr,info_ptr));
         }
         //png_set_rows(png_ptr,info_ptr,row_pointers);
         png_read_image(png_ptr,row_pointers);
-        for(int i=0;i<ySize;++i)
-                for(int j=0;j<xSize;++j)
+        for(i=0;i<ySize;++i)
+                for(j=0;j<xSize;++j)
                         (*volume)[nSlice][j][i]=row_pointers[i][j];
 
         fclose(fp);
@@ -120,8 +121,6 @@ int stpng8Read(unsigned *xSize,
         // Determine the size of the first image (others must have the same
         // size).
         pngSize(xSize,ySize,filename1);
-        std::cout<<"xSize="<<(*xSize)<<std::endl;
-        std::cout<<"ySize="<<(*ySize)<<std::endl;
         // Init the volumetric structure, with only four slices.
         *volume=initStructure(*xSize,*ySize,4);
         stpng8ReadSlice(0,*xSize,*ySize,volume,filename1);

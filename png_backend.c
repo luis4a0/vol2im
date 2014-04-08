@@ -1,8 +1,8 @@
 #include "png_backend.h"
 #include <png.h>
 #include <stdint.h>
-#include <cstdlib>
-#include <cstdio>
+#include <stdlib.h>
+#include <stdio.h>
 
 // http://www.libpng.org/pub/png/libpng-1.2.5-manual.html#section-4
 int pngWrite(const unsigned startSlice,
@@ -11,6 +11,7 @@ int pngWrite(const unsigned startSlice,
              voxel_t ***volume,
              const char *filename){
 
+        int x,y;
         FILE *fp=fopen(filename,"wb");
         if(!fp)
                 return -1;
@@ -46,11 +47,11 @@ int pngWrite(const unsigned startSlice,
         int pixel_size=4;
         png_byte **row_pointers=(png_byte**)
                 png_malloc(png_ptr,ySize*sizeof(png_byte*));
-        for (int y=0;y<ySize;++y){
+        for(y=0;y<ySize;++y){
                 png_byte *row=(png_byte*)
                         png_malloc(png_ptr,sizeof(uint8_t)*xSize*pixel_size);
                 row_pointers[y]=row;
-                for(int x=0;x<xSize;++x){
+                for(x=0;x<xSize;++x){
                         *row++=volume[startSlice  ][x][y];
                         *row++=volume[startSlice+1][x][y];
                         *row++=volume[startSlice+2][x][y];
@@ -64,7 +65,7 @@ int pngWrite(const unsigned startSlice,
 
         fclose(fp);
 
-        for(int y=0;y<ySize;y++){
+        for(y=0;y<ySize;y++){
                 png_free(png_ptr,row_pointers[y]);
         }
         png_free(png_ptr,row_pointers);

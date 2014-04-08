@@ -1,5 +1,5 @@
-#include <iostream>
-#include <cstring>
+#include <stdio.h>
+#include <string.h>
 #include "volumetric_structure.h"
 #include "png_backend.h"
 #include "stdout_backend.h"
@@ -26,21 +26,15 @@ int main(const int argc,const char** argv){
         backend be=PNG_RGBA;
         int inFilePos=1;
         int outFilePos=2;
-        bool printStructure=false;
+        int i;
         // Read the command line.
         if(argc<2){
-                std::cerr<<"Use -h option to see how to use "<<
-                        argv[0]<<"."<<std::endl;
+                fprintf(stderr,"Use -h option to see how to use %s.\n",argv[0]);
                 return -1;
         }
-        for(int i=1;i<argc;++i){
+        for(i=1;i<argc;++i){
                 if(!strcmp(argv[i],"-h")||!strcmp(argv[i],"--help")){
-                        std::cerr<<
-                                "usage: "<<argv[0]<<
-                                " [-i input|-4i inputs] [-o output] [options]\n"<<
-                                "where options are zero or more of:\n"<<
-                                "-p\t\tprint the data structure to stdout\n"<<
-                                "-h, --help\t\tshow this message\n";
+                        fprintf(stderr,"usage: %s [-i input|-4i inputs] [-o output] [options]\nwhere options are zero or more of:\n-p\t\tprint the data structure to stdout\n-h, --help\t\tshow this message\n",argv[0]);
                         return -1;
                 }
                 if(!strcmp(argv[i],"-i")){
@@ -81,7 +75,7 @@ int main(const int argc,const char** argv){
                                    argv[inFilePos+3]);
                         break;
                 default:
-                        std::cerr<<"no input type specified"<<std::endl;
+                        fprintf(stderr,"no input type specified\n");
                         return -1;
                         break;
         }
@@ -94,10 +88,10 @@ int main(const int argc,const char** argv){
                                  argv[outFilePos]);
                         break;
                 case STDOUT:
-                        printSlices(std::cout,numSlices,xSize,ySize,volume);
+                        printSlices(stdout,numSlices,xSize,ySize,volume);
                         break;
                 default:
-                        std::cerr<<"no output type specified"<<std::endl;
+                        fprintf(stderr,"no output type specified\n");
                         return -1;
                         break;
         }
