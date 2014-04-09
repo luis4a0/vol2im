@@ -21,4 +21,4 @@ int stpng8Read(unsigned*,
                const char*,
                const char*);
 
-#endif // VOL2IM_STPNG8_FRONTEND_H
+#endif /* VOL2IM_STPNG8_FRONTEND_H */

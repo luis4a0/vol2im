@@ -5,4 +5,4 @@
 
 int pngRead(unsigned*,unsigned*,unsigned*,voxel_t****,const char*);
 
-#endif // VOL2IM_PNG_FRONTEND_H
+#endif /* VOL2IM_PNG_FRONTEND_H */

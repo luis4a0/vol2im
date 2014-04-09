@@ -6,4 +6,4 @@
 
 void printSlices(FILE*,const unsigned,const unsigned,const unsigned,voxel_t***);
 
-#endif // VOL2IM_STDOUT_BACKEND
+#endif /* VOL2IM_STDOUT_BACKEND */

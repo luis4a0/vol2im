@@ -4,14 +4,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-// http://www.libpng.org/pub/png/libpng-1.2.5-manual.html#section-4
+/* http://www.libpng.org/pub/png/libpng-1.2.5-manual.html#section-4 */
 int pngWrite(const unsigned startSlice,
              const unsigned xSize,
              const unsigned ySize,
              voxel_t ***volume,
              const char *filename){
 
-        int x,y;
+        unsigned x,y;
         FILE *fp=fopen(filename,"wb");
         if(!fp)
                 return -1;
@@ -34,10 +34,10 @@ int pngWrite(const unsigned startSlice,
 
         png_set_IHDR(png_ptr,
                      info_ptr,
-                     xSize, // width
-                     ySize, // height
-                     8, // depth
-                     PNG_COLOR_TYPE_RGB_ALPHA, // 4-channel=RGBA
+                     xSize, /* width */
+                     ySize, /* height */
+                     8, /* depth */
+                     PNG_COLOR_TYPE_RGB_ALPHA, /* 4-channel=RGBA */
                      PNG_INTERLACE_NONE,
                      PNG_COMPRESSION_TYPE_DEFAULT,
                      PNG_FILTER_TYPE_DEFAULT);

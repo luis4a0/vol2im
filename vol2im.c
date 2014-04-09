@@ -7,14 +7,14 @@
 #include "stpng8_frontend.h"
 #include "stpng816_frontend.h"
 
-// The frontend specifies the input file type of the program.
+/* The frontend specifies the input file type of the program. */
 typedef enum{
-        HMAP_PNG_GRAY,  // a height map in a gray png image
-        FOUR_SLICES_PNG_GRAY,   // four slices in gray png images
-        SIXTEEN_SLICES_PNG_GRAY // sixteen slices produce Warhol-like output!
+        HMAP_PNG_GRAY,  /* a height map in a gray png image */
+        FOUR_SLICES_PNG_GRAY,   /* four slices in gray png images */
+        SIXTEEN_SLICES_PNG_GRAY /* sixteen slices produce Warhol-like output! */
 }frontend;
 
-// The backend specifies the output file type.
+/* The backend specifies the output file type. */
 typedef enum{
         PNG_RGBA,
         PNG_RGB,
@@ -23,13 +23,13 @@ typedef enum{
 }backend;
 
 int main(const int argc,const char** argv){
-        // Default options.
+        /* Default options. */
         frontend fe=HMAP_PNG_GRAY;
         backend be=PNG_RGBA;
         int inFilePos=1;
         int outFilePos=2;
         int i;
-        // Read the command line.
+        /* Read the command line. */
         if(argc<2){
                 fprintf(stderr,"Use -h option to see how to use %s.\n",argv[0]);
                 return -1;
@@ -61,7 +61,7 @@ int main(const int argc,const char** argv){
 
         unsigned startSlice=0;
         unsigned numSlices,xSize,ySize;
-        // The volumetric data structure to store the read data.
+        /* The volumetric data structure to store the read data. */
         voxel_t ***volume;
         switch(fe){
                 case HMAP_PNG_GRAY:

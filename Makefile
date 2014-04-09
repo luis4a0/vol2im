@@ -1,5 +1,5 @@
 CC=gcc
-CCPARAMS=-g -Wall -O2
+CCPARAMS=-Wextra -O2 -ansi
 LDPARAMS=
 CCINCLUDES=-I/usr/include/libpng
 CCLIBDIRS=-L/lib/x86_64-linux-gnu

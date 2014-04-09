@@ -5,25 +5,25 @@
 #include <stdio.h>
 #include <math.h>
 
-// Open one png file and return its size.
+/* Open one png file and return its size. */
 int pngSize(unsigned *xSize,unsigned *ySize,const char *filename){
         FILE *fp=fopen(filename,"rb");
         if(!fp)
                 return -1;
-        // Read the header of the file.
+        /* Read the header of the file. */
         unsigned char header[8];
         png_size_t number_to_check=8;
         if(fread(header,1,8,fp)!=(unsigned long)ftell(fp))
                 return -2;
-        // Check the file is valid.
+        /* Check the file is valid. */
         if(png_sig_cmp(header,0,number_to_check))
                 return -3;
-        // Initialize.
+        /* Initialize. */
         png_structp png_ptr=
                 png_create_read_struct(PNG_LIBPNG_VER_STRING,NULL,NULL,NULL);
         if(!png_ptr)
                 return -4;
-        //
+
         png_infop info_ptr=png_create_info_struct(png_ptr);
         if(!info_ptr){
                 png_destroy_read_struct(&png_ptr,
@@ -31,10 +31,10 @@ int pngSize(unsigned *xSize,unsigned *ySize,const char *filename){
                                         (png_infopp)NULL);
                 return -5;
         }
-        //
+
         if(setjmp(png_jmpbuf(png_ptr)))
                 return -6;
-        //
+
         png_init_io(png_ptr,fp);
         png_set_sig_bytes(png_ptr,number_to_check);
         png_read_info(png_ptr,info_ptr);
@@ -46,8 +46,8 @@ int pngSize(unsigned *xSize,unsigned *ySize,const char *filename){
         return 0;
 }
 
-// Read one slice from the file and put it on the structure, with the top-left
-// corner in (xStart,yStart). The file is assumed to be a grayscale png.
+/* Read one slice from the file and put it on the structure, with the top-left
+corner in (xStart,yStart). The file is assumed to be a grayscale png. */
 int stpng8ReadSlice(unsigned nSlice,
                     unsigned xSize,
                     unsigned ySize,
@@ -56,24 +56,24 @@ int stpng8ReadSlice(unsigned nSlice,
                     voxel_t ****volume,
                     const char *filename){
         unsigned i,j;
-        // Open file.
+        /* Open file. */
         FILE *fp=fopen(filename,"rb");
         if(!fp)
                 return -1;
-        // Read the header of the file.
+        /* Read the header of the file. */
         unsigned char header[8];
         png_size_t number_to_check=8;
         if(fread(header,1,8,fp)!=(unsigned long)ftell(fp))
                 return -2;
-        // Check the file is valid.
+        /* Check the file is valid. */
         if(png_sig_cmp(header,0,number_to_check))
                 return -3;
-        // Initialize.
+        /* Initialize. */
         png_structp png_ptr=
                 png_create_read_struct(PNG_LIBPNG_VER_STRING,NULL,NULL,NULL);
         if(!png_ptr)
                 return -4;
-        //
+
         png_infop info_ptr=png_create_info_struct(png_ptr);
         if(!info_ptr){
                 png_destroy_read_struct(&png_ptr,
@@ -81,10 +81,10 @@ int stpng8ReadSlice(unsigned nSlice,
                                         (png_infopp)NULL);
                 return -5;
         }
-        //
+
         if(setjmp(png_jmpbuf(png_ptr)))
                 return -6;
-        //
+
         png_init_io(png_ptr,fp);
         png_set_sig_bytes(png_ptr,number_to_check);
         png_read_info(png_ptr,info_ptr);
@@ -101,9 +101,9 @@ int stpng8ReadSlice(unsigned nSlice,
         for(i=0;i<ySize;++i){
                 row_pointers[i]=
                         (png_bytep)png_malloc(png_ptr,xSize*pixel_size);
-                        //(png_byte*)malloc(png_get_rowbytes(png_ptr,info_ptr));
+                        /*(png_byte*)malloc(png_get_rowbytes(png_ptr,info_ptr));*/
         }
-        //png_set_rows(png_ptr,info_ptr,row_pointers);
+        /*png_set_rows(png_ptr,info_ptr,row_pointers);*/
         png_read_image(png_ptr,row_pointers);
         for(i=0;i<ySize;++i)
                 for(j=0;j<xSize;++j)
@@ -121,10 +121,10 @@ int stpng8Read(unsigned *xSize,
                const char *filename2,
                const char *filename3,
                const char *filename4){
-        // Determine the size of the first image (others must have the same
-        // size).
+        /* Determine the size of the first image (others must have the same
+        size). */
         pngSize(xSize,ySize,filename1);
-        // Init the volumetric structure, with only four slices.
+        /* Init the volumetric structure, with only four slices. */
         *volume=initStructure(*xSize,*ySize,4);
         stpng8ReadSlice(0,*xSize,*ySize,0,0,volume,filename1);
         stpng8ReadSlice(1,*xSize,*ySize,0,0,volume,filename2);
