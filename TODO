@@ -1,0 +1,3 @@
+* Accept more input and output formats beyond png (tiff and jpeg at least).
+* Implement frontends for different input formats.
+* Add data structure compression, via zlib.
