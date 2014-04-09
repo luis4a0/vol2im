@@ -3,6 +3,16 @@
 
 #include "volumetric_structure.h"
 
+int pngSize(unsigned*,unsigned*,const char*);
+
+int stpng8ReadSlice(unsigned,
+                    unsigned,
+                    unsigned,
+                    unsigned,
+                    unsigned,
+                    voxel_t ****,
+                    const char*);
+
 int stpng8Read(unsigned*,
                unsigned*,
                voxel_t****,

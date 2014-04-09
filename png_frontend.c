@@ -45,8 +45,8 @@ int pngRead(unsigned *numSlices,
         png_init_io(png_ptr,fp);
         png_set_sig_bytes(png_ptr,number_to_check);
         png_read_info(png_ptr,info_ptr);
-        png_byte color_type=png_get_color_type(png_ptr,info_ptr);
-        png_byte bit_depth=png_get_bit_depth(png_ptr,info_ptr);
+        /*png_byte color_type=png_get_color_type(png_ptr,info_ptr);*/
+        /*png_byte bit_depth=png_get_bit_depth(png_ptr,info_ptr);*/
         *xSize=png_get_image_width(png_ptr,info_ptr);
         *ySize=png_get_image_height(png_ptr,info_ptr);
         *numSlices=(unsigned)(powf(2.f,png_get_bit_depth(png_ptr,info_ptr)));

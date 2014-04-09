@@ -1,5 +1,5 @@
 CC=gcc
-CCPARAMS=-g
+CCPARAMS=-g -Wall -O2
 LDPARAMS=
 CCINCLUDES=-I/usr/include/libpng
 CCLIBDIRS=-L/lib/x86_64-linux-gnu
@@ -7,11 +7,11 @@ CCLIBS=-lm -lpng
 
 EXEC_NAME=vol2im
 OBJECTS=vol2im.o volumetric_structure.o stdout_backend.o png_backend.o \
-	png_frontend.o stpng8_frontend.o
+	png_frontend.o stpng8_frontend.o stpng816_frontend.o
 
 all: ${EXEC_NAME}
 
-.o: %.c
+.c.o:
 	${CC} ${CCPARAMS} ${CCINCLUDES} -c $<
 
 ${EXEC_NAME}: ${OBJECTS}

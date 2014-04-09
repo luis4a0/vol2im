@@ -1,4 +1,4 @@
-#include "png_frontend.h"
+#include "stpng8_frontend.h"
 #include <png.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -7,7 +7,6 @@
 
 // Open one png file and return its size.
 int pngSize(unsigned *xSize,unsigned *ySize,const char *filename){
-        int i,j;
         FILE *fp=fopen(filename,"rb");
         if(!fp)
                 return -1;
@@ -39,21 +38,24 @@ int pngSize(unsigned *xSize,unsigned *ySize,const char *filename){
         png_init_io(png_ptr,fp);
         png_set_sig_bytes(png_ptr,number_to_check);
         png_read_info(png_ptr,info_ptr);
-        png_byte color_type=png_get_color_type(png_ptr,info_ptr);
-        png_byte bit_depth=png_get_bit_depth(png_ptr,info_ptr);
+        /*png_byte color_type=png_get_color_type(png_ptr,info_ptr);*/
+        /*png_byte bit_depth=png_get_bit_depth(png_ptr,info_ptr);*/
         *xSize=png_get_image_width(png_ptr,info_ptr);
         *ySize=png_get_image_height(png_ptr,info_ptr);
         fclose(fp);
+        return 0;
 }
 
-// Read one slice from the file and put it on the structure. The file is
-// assumed to be a grayscale png.
+// Read one slice from the file and put it on the structure, with the top-left
+// corner in (xStart,yStart). The file is assumed to be a grayscale png.
 int stpng8ReadSlice(unsigned nSlice,
                     unsigned xSize,
                     unsigned ySize,
+                    unsigned xStart,
+                    unsigned yStart,
                     voxel_t ****volume,
                     const char *filename){
-        int i,j;
+        unsigned i,j;
         // Open file.
         FILE *fp=fopen(filename,"rb");
         if(!fp)
@@ -86,8 +88,8 @@ int stpng8ReadSlice(unsigned nSlice,
         png_init_io(png_ptr,fp);
         png_set_sig_bytes(png_ptr,number_to_check);
         png_read_info(png_ptr,info_ptr);
-        png_byte color_type=png_get_color_type(png_ptr,info_ptr);
-        png_byte bit_depth=png_get_bit_depth(png_ptr,info_ptr);
+        /*png_byte color_type=png_get_color_type(png_ptr,info_ptr);*/
+        /*png_byte bit_depth=png_get_bit_depth(png_ptr,info_ptr);*/
 
         png_read_update_info(png_ptr,info_ptr);
 
@@ -105,7 +107,8 @@ int stpng8ReadSlice(unsigned nSlice,
         png_read_image(png_ptr,row_pointers);
         for(i=0;i<ySize;++i)
                 for(j=0;j<xSize;++j)
-                        (*volume)[nSlice][j][i]=row_pointers[i][j];
+                        (*volume)[nSlice][j+xStart][i+yStart]=
+                                row_pointers[i][j];
 
         fclose(fp);
         return 0;
@@ -123,10 +126,10 @@ int stpng8Read(unsigned *xSize,
         pngSize(xSize,ySize,filename1);
         // Init the volumetric structure, with only four slices.
         *volume=initStructure(*xSize,*ySize,4);
-        stpng8ReadSlice(0,*xSize,*ySize,volume,filename1);
-        stpng8ReadSlice(1,*xSize,*ySize,volume,filename2);
-        stpng8ReadSlice(2,*xSize,*ySize,volume,filename3);
-        stpng8ReadSlice(3,*xSize,*ySize,volume,filename4);
+        stpng8ReadSlice(0,*xSize,*ySize,0,0,volume,filename1);
+        stpng8ReadSlice(1,*xSize,*ySize,0,0,volume,filename2);
+        stpng8ReadSlice(2,*xSize,*ySize,0,0,volume,filename3);
+        stpng8ReadSlice(3,*xSize,*ySize,0,0,volume,filename4);
 
         return 0;
 }

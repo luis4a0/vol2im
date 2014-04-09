@@ -5,11 +5,13 @@
 #include "stdout_backend.h"
 #include "png_frontend.h"
 #include "stpng8_frontend.h"
+#include "stpng816_frontend.h"
 
 // The frontend specifies the input file type of the program.
 typedef enum{
         HMAP_PNG_GRAY,  // a height map in a gray png image
-        FOUR_SLICES_PNG_GRAY  // four slices in gray png images
+        FOUR_SLICES_PNG_GRAY,   // four slices in gray png images
+        SIXTEEN_SLICES_PNG_GRAY // sixteen slices produce Warhol-like output!
 }frontend;
 
 // The backend specifies the output file type.
@@ -34,7 +36,7 @@ int main(const int argc,const char** argv){
         }
         for(i=1;i<argc;++i){
                 if(!strcmp(argv[i],"-h")||!strcmp(argv[i],"--help")){
-                        fprintf(stderr,"usage: %s [-i input|-4i inputs] [-o output] [options]\nwhere options are zero or more of:\n-p\t\tprint the data structure to stdout\n-h, --help\t\tshow this message\n",argv[0]);
+                        fprintf(stderr,"usage: %s [-i input|-4i inputs|-16i inputs] [-o output] [options]\nwhere options are zero or more of:\n-p\t\tprint the data structure to stdout\n-h, --help\t\tshow this message\n",argv[0]);
                         return -1;
                 }
                 if(!strcmp(argv[i],"-i")){
@@ -43,6 +45,10 @@ int main(const int argc,const char** argv){
                 }
                 if(!strcmp(argv[i],"-4i")){
                         fe=FOUR_SLICES_PNG_GRAY;
+                        inFilePos=i+1;
+                }
+                if(!strcmp(argv[i],"-16i")){
+                        fe=SIXTEEN_SLICES_PNG_GRAY;
                         inFilePos=i+1;
                 }
                 if(!strcmp(argv[i],"-p"))
@@ -73,6 +79,12 @@ int main(const int argc,const char** argv){
                                    argv[inFilePos+1],
                                    argv[inFilePos+2],
                                    argv[inFilePos+3]);
+                        break;
+                case SIXTEEN_SLICES_PNG_GRAY:
+                        stpng8Read16(&xSize,
+                                     &ySize,
+                                     &volume,
+                                     argv+inFilePos);
                         break;
                 default:
                         fprintf(stderr,"no input type specified\n");
