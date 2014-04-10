@@ -1,3 +1,21 @@
+/*
+
+vol2im embeds volumetric data in images. Copyright (C) 2014 Luis Peñaranda.
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
 #include <stdio.h>
 #include <string.h>
 #include "volumetric_structure.h"
@@ -22,22 +40,35 @@ typedef enum{
         STDOUT
 }backend;
 
+int license(char *progname,FILE *f){
+        fprintf(f,"%s copyright (C) 2014 Luis Peñaranda. This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions. For details, see the file COPYING, included with %s, or refer to http://www.gnu.org/licenses to obtain the license.\n",progname,progname);
+    return 0;
+}
+
 int main(const int argc,const char** argv){
+        /* Name of the program. */
+        char *progname="vol2im";
         /* Default options. */
-        frontend fe=HMAP_PNG_GRAY;
-        backend be=PNG_RGBA;
-        int inFilePos=1;
-        int outFilePos=2;
-        int i;
+        frontend fe;
+        backend be;
+        int inFilePos,outFilePos,i;
         /* Read the command line. */
         if(argc<2){
                 fprintf(stderr,"Use -h option to see how to use %s.\n",argv[0]);
                 return -1;
         }
+        inFilePos=1;
+        outFilePos=2;
+        fe=HMAP_PNG_GRAY;
+        be=PNG_RGBA;
         for(i=1;i<argc;++i){
-                if(!strcmp(argv[i],"-h")||!strcmp(argv[i],"--help")){
-                        fprintf(stderr,"usage: %s [-i input|-4i inputs|-16i inputs] [-o output] [options]\nwhere options are zero or more of:\n-p\t\tprint the data structure to stdout\n-h, --help\t\tshow this message\n",argv[0]);
+                if(!strcmp(argv[i],"-l")||!strcmp(argv[i],"--license")){
+                        license(progname,stderr);
                         return -1;
+                }
+                if(!strcmp(argv[i],"-h")||!strcmp(argv[i],"--help")){
+                        fprintf(stderr,"usage: %s [-i input|-4i inputs|-16i inputs] [-o output] [options]\nwhere options are zero or more of:\n-p, --print\tprint the data structure to stdout\n-h, --help\tshow this message\n-l, --license\tshow information about the license\n",argv[0]);
+                        return -2;
                 }
                 if(!strcmp(argv[i],"-i")){
                         fe=HMAP_PNG_GRAY;
@@ -51,7 +82,7 @@ int main(const int argc,const char** argv){
                         fe=SIXTEEN_SLICES_PNG_GRAY;
                         inFilePos=i+1;
                 }
-                if(!strcmp(argv[i],"-p"))
+                if(!strcmp(argv[i],"-p")||!strcmp(argv[i],"--print"))
                         be=STDOUT;
                 if(!strcmp(argv[i],"-o")){
                         be=PNG_RGBA;
