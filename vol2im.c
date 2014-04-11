@@ -41,7 +41,7 @@ typedef enum{
 }backend;
 
 int license(char *progname,FILE *f){
-        fprintf(f,"%s copyright (C) 2014 Luis Peñaranda. This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions. For details, see the file COPYING, included with %s, or refer to http://www.gnu.org/licenses to obtain the license.\n",progname,progname);
+        fprintf(f,"%s\nCopyright (C) 2014 Luis Peñaranda\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n",progname);
     return 0;
 }
 
