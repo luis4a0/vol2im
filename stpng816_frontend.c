@@ -38,9 +38,9 @@ int stpng8Read16(unsigned *xSize,
         for(i=0;i<4;++i){
                 stpng8ReadSlice(i,*xSize,*ySize,0,0,volume,files[4*i]);
                 stpng8ReadSlice(i,*xSize,*ySize,0,*xSize,volume,files[4*i+1]);
-                stpng8ReadSlice(i,*xSize,*ySize,*ySize,0,volume,files[4*i+2]);
                 stpng8ReadSlice(i,*xSize,*ySize,*ySize,*xSize,volume,
-                                files[4*i+3]);
+                                files[4*i+2]);
+                stpng8ReadSlice(i,*xSize,*ySize,*ySize,0,volume,files[4*i+3]);
         }
         /* Set the correct file size for the backend to write. */
         *xSize*=2;
