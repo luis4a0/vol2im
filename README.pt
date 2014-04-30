@@ -1,0 +1,13 @@
+Vol2im compila com cualquer compilador ANSI (gcc, icc, vc), mas precisa da
+biblioteca libpng ( http://www.libpng.org/pub/png/libpng.html ).
+
+Vol2im aceita, por enquanto, só entradas e saída em formato PNG.
+As imagens podem ser convertidas usando Graphics Magick (em unix, por exemplo):
+        convert input.tif output.png
+
+Modo de uso:
+Para gerar uma imagem com 4 camadas:
+        ./vol2im -4i a.png b.png c.png d.png -o output.png
+Para gerar uma imagem com 16 camadas:
+        ./vol2im -16i 1.png 2.png 3.png 4.png 5.png 6.png 7.png 8.png 9.png 10.png 11.png 12.png 13.png 14.png 15.png 16.png -o output.png
+
