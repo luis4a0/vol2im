@@ -17,7 +17,9 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include "version.h"
 #include "volumetric_structure.h"
 #include "png_backend.h"
 #include "stdout_backend.h"
@@ -40,18 +42,34 @@ typedef enum{
         STDOUT
 }backend;
 
+/* This function returns the version of the program, read from the definitions
+in version.h. TODO: it only works with one-charachter definitions. */
+char* version(){
+        char *ver;
+        ver=(char*)malloc(6*sizeof(char));
+        ver[0]=VOL2IM_VERSION_MAJOR+'0';
+        ver[1]='.';
+        ver[2]=VOL2IM_VERSION_MINOR+'0';
+        ver[3]='.';
+        ver[4]=VOL2IM_VERSION_REV+'0';
+        ver[5]='\0';
+        return ver;
+}
+
 int license(char *progname,FILE *f){
         fprintf(f,"%s\nCopyright (C) 2014 Luis Peñaranda\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n",progname);
     return 0;
 }
 
 int main(const int argc,const char** argv){
-        /* Name of the program. */
-        char *progname="vol2im";
+        /* Name and version of the program. */
+        char *progname;
+        progname=(char*)malloc(16*sizeof(char));
+        strcpy(progname,"vol2im ");
+        strcat(progname,version());
         /* Default options. */
         frontend fe;
-        backend be;
-        int inFilePos,outFilePos,i;
+        backend be; int inFilePos,outFilePos,i;
         /* Read the command line. */
         if(argc<2){
                 fprintf(stderr,"Use -h option to see how to use %s.\n",argv[0]);
@@ -67,7 +85,7 @@ int main(const int argc,const char** argv){
                         return -1;
                 }
                 if(!strcmp(argv[i],"-h")||!strcmp(argv[i],"--help")){
-                        fprintf(stderr,"usage: %s [-i input|-4i inputs|-16i inputs] [-o output] [options]\nwhere options are zero or more of:\n-p, --print\tprint the data structure to stdout\n-h, --help\tshow this message\n-l, --license\tshow information about the license\n",argv[0]);
+                        fprintf(stderr,"%s\nusage: %s [-i input|-4i inputs|-16i inputs] [-o output] [options]\nwhere options are zero or more of:\n-p, --print\tprint the data structure to stdout\n-h, --help\tshow this message\n-l, --license\tshow information about the license\n",progname,argv[0]);
                         return -2;
                 }
                 if(!strcmp(argv[i],"-i")){
