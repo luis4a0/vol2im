@@ -4,6 +4,7 @@ biblioteca libpng ( http://www.libpng.org/pub/png/libpng.html ).
 Vol2im aceita, por enquanto, só entradas e saída em formato PNG.
 As imagens podem ser convertidas usando Graphics Magick (em unix, por exemplo):
         convert input.tif output.png
+(Na pasta scripts tem alguns scripts para fazer converter muitos arquivos.)
 
 Modo de uso:
 Para gerar uma imagem com 4 camadas:
