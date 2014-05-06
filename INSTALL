@@ -1,0 +1,9 @@
+Vol2im compiles with any ANSI-compliant compiler (gcc, icc, vc). It needs the
+libpng library ( http://www.libpng.org/pub/png/libpng.html ).
+
+To configure, change the paths in the Makefile to suit your needs. Then, run
+'make' to compile and link dynamically or 'make static' to compile and link
+statically.
+
+No installation is needed, although you can copy the binary produced to any
+executable path.

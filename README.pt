@@ -1,6 +1,3 @@
-Vol2im compila com cualquer compilador ANSI (gcc, icc, vc), mas precisa da
-biblioteca libpng ( http://www.libpng.org/pub/png/libpng.html ).
-
 Vol2im aceita, por enquanto, só entradas e saída em formato PNG.
 As imagens podem ser convertidas usando Graphics Magick (em unix, por exemplo):
         convert input.tif output.png

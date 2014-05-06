@@ -1,3 +1,10 @@
-* Accept more input and output formats beyond png (tiff and jpeg at least).
+Goals before 1.0:
 * Implement frontends for different input formats.
+* Improve the interface: read as many input slices as needed and choose which
+slices to output.
+* Permit to save the data structure and use it as input.
+
+Future goals:
+* Accept more input and output formats beyond png (tiff and jpeg at least).
 * Add data structure compression, via zlib.
+* Choose the number of bits used for internal representation and output.
